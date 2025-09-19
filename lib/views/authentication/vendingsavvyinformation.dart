@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:vendingsavvy/constant/route_constants.dart';
+import 'package:vendingsavvy/controllers/auth_controllers.dart';
 import 'package:vendingsavvy/custom_widgets/custom_text.dart';
 
 class Vendingsavvyinformation extends StatefulWidget {
@@ -14,10 +15,8 @@ class Vendingsavvyinformation extends StatefulWidget {
 
 class _VendingsavvyinformationState extends State<Vendingsavvyinformation> {
   final _formKey = GlobalKey<FormState>();
-  String? selectedVendingMachines;
-  String? selectedCottonCandyMachines;
-  String? selectedOtherMachines;
 
+  final authController = Get.find<AuthController>();
   @override
   void dispose() {
     super.dispose();
@@ -70,7 +69,7 @@ class _VendingsavvyinformationState extends State<Vendingsavvyinformation> {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  value: selectedVendingMachines,
+                  value: authController.selectedVendingMachines.value,
                   items: ['1', '2', '3', '4', '5', 'More'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -79,7 +78,8 @@ class _VendingsavvyinformationState extends State<Vendingsavvyinformation> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      selectedVendingMachines = newValue;
+                      authController.selectedVendingMachines.value =
+                          newValue ?? "1";
                     });
                   },
                   validator: (value) {
@@ -110,7 +110,7 @@ class _VendingsavvyinformationState extends State<Vendingsavvyinformation> {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  value: selectedCottonCandyMachines,
+                  value: authController.selectedCottonCandyMachines.value,
                   items: ['1', '2', '3', '4', '5', 'More'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -119,7 +119,8 @@ class _VendingsavvyinformationState extends State<Vendingsavvyinformation> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      selectedCottonCandyMachines = newValue;
+                      authController.selectedCottonCandyMachines.value =
+                          newValue ?? "1";
                     });
                   },
                   validator: (value) {
@@ -150,7 +151,7 @@ class _VendingsavvyinformationState extends State<Vendingsavvyinformation> {
                       // color: Colors.grey,
                     ),
                   ),
-                  value: selectedOtherMachines,
+                  value: authController.selectedOtherMachines.value,
                   items: ['1', '2', '3', '4', '5', 'More'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -159,7 +160,8 @@ class _VendingsavvyinformationState extends State<Vendingsavvyinformation> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      selectedOtherMachines = newValue;
+                      authController.selectedOtherMachines.value =
+                          newValue ?? "1";
                     });
                   },
                   validator: (value) {
@@ -172,10 +174,9 @@ class _VendingsavvyinformationState extends State<Vendingsavvyinformation> {
                 SizedBox(height: 16.h),
                 ElevatedButton(
                   onPressed: () {
-                    // if (_formKey.currentState!.validate()) {
-                    //   // Handle next button action
-                    // }
-                    Get.toNamed(RouteConstants.vendingsavingaddress);
+                    if (_formKey.currentState!.validate()) {
+                      Get.toNamed(RouteConstants.vendingsavingaddress);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,

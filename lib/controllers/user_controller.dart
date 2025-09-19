@@ -24,7 +24,6 @@ class UserController extends GetxController {
     await prefs.setString('email', userModel.email);
     await prefs.setString('avatar_url', userModel.profilePicture ?? "");
 
-    await prefs.setString('otp', userModel.otp ?? "");
     await prefs.setString('token', userToken);
 token.value=userToken;
      user.value = userModel;

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,7 +20,6 @@ class ApiClient extends GetxService {
   }
 
   Future<http.Response> get({required String url}) async {
-    log("auth ${userController.token.value}");
     final headers = {
       "Authorization": "Bearer ${userController.token.value}",
       "Accept": "application/json",

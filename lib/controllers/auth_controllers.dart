@@ -13,34 +13,37 @@ class AuthController extends GetxController {
 
   AuthController({required this.authRepo});
 
-  final nameController = TextEditingController(text: "Default Name");
-  final addressController = TextEditingController(text: "Default Address");
-  final customerNumbeController = TextEditingController(text: "12345");
-  final emailController = TextEditingController(text: "user@example.com");
-  final passwordController = TextEditingController(text: "Password123");
-  final confirmPasswordController = TextEditingController(text: "Password123");
+  final nameController = TextEditingController();
+  final addressController = TextEditingController();
+  final customerNumbeController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   RxBool isLoading = false.obs;
   final isPasswordHidden = true.obs;
   var selectedRole = "CUSTOMER".obs;
 
-  RxString selectedBusinessType="RETAILER".obs;
-  final businessNameController = TextEditingController(text: "Vending Savvy");
-  final fullNameController = TextEditingController(text: "John Doe");
-  final businessAddressController = TextEditingController(
-    text: "123 Business St",
-  );
-  final contactNumberController = TextEditingController(
-    text: "(+1) 234 567 890",
-  );
+  RxString selectedBusinessType = "RETAILER".obs;
+  final businessNameController = TextEditingController();
+  final fullNameController = TextEditingController();
+  final businessAddressController = TextEditingController();
+  final contactNumberController = TextEditingController();
   final businessTypeController = TextEditingController(text: "Retail");
-  final countryController = TextEditingController(text: "USA");
-  final stateController = TextEditingController(text: "California");
-  final countyController = TextEditingController(text: "Los Angeles");
+  final countryController = TextEditingController();
+  final stateController = TextEditingController();
+  final countyController = TextEditingController();
   final stateTaxController = TextEditingController();
   final countyTaxController = TextEditingController();
 
   var otp = "".obs;
-  final UserController userController = Get.find<UserController>();
+  
+
+  RxString selectedVendingMachines="1".obs;
+  RxString selectedCottonCandyMachines="1".obs;
+  RxString selectedOtherMachines="1".obs;
+
+
+final UserController userController = Get.find<UserController>();
 
   // set user role
   void setRole(String role) {
@@ -50,7 +53,7 @@ class AuthController extends GetxController {
   // register User
   void registerUser({required UserModel user}) {
     isLoading.value = true;
-    log("in register user");
+    
     authRepo.registerUser(
       user: user,
       onSuccess: () {
@@ -154,6 +157,24 @@ class AuthController extends GetxController {
       onSuccess: () {
         isLoading.value = false;
         AppSnackbar.success("Business information saved successfully");
+      businessType=="RETAILER"? Get.toNamed(RouteConstants.vendinginformationscreen):Get.toNamed(RouteConstants.verifyscreen);
+   
+      },
+      onError: (message) {
+        isLoading.value = false;
+        AppSnackbar.error(message);
+      },
+    );
+  }
+
+  // submit vending machine information
+  void submitVendingMachineInformation(List<Map<String, dynamic>> machineData) {
+    isLoading.value = true;
+    authRepo.submitVendingMachineInformation(
+      machineData: machineData,
+      onSuccess: () {
+        isLoading.value = false;
+        AppSnackbar.success("Vending machine information saved successfully");
         Get.toNamed(RouteConstants.dashboard);
       },
       onError: (message) {

@@ -1,11 +1,12 @@
 import "package:flutter/material.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
+import "package:get/get_rx/src/rx_types/rx_types.dart";
 import "package:vendingsavvy/constant/appcolors.dart";
 import "package:vendingsavvy/utils/app_fonts.dart" show AppFonts;
 
 /// Custom Button used in App
 class CustomButton extends StatelessWidget {
-  const CustomButton({
+  CustomButton({
     Key? key,
     required this.buttonColor,
     required this.onTap,
@@ -24,7 +25,9 @@ class CustomButton extends StatelessWidget {
     this.borderRadius = 10,
     this.borderInsideColor,
     this.fontWeight = FontWeight.w600,
-  }) : super(key: key);
+    RxBool? isLoading,
+  }) : isLoading = isLoading ?? false.obs, // initialize properly
+       super(key: key);
 
   final Color buttonColor;
   final Color textColor;
@@ -43,7 +46,7 @@ class CustomButton extends StatelessWidget {
   final Color? borderColor;
   final Color? borderInsideColor;
   final FontWeight? fontWeight;
-
+  final RxBool isLoading;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -82,17 +85,26 @@ class CustomButton extends StatelessWidget {
                 ],
               )
             : Center(
-                child: Text(
-                  buttonText,
-                  style: TextStyle(
-                    color: showBorder ?? false
-                        ? AppColors.kPrimaryColor
-                        : textColor,
-                    fontSize: fontSize.sp,
-                    fontFamily: fontFamily ?? AppFonts.interBold,
-                    fontWeight: fontWeight,
-                  ),
-                ),
+                child: isLoading.value
+                    ? SizedBox(
+                        width: 18.w,
+                        height: 18.w,
+                        child: const CircularProgressIndicator.adaptive(
+                          strokeWidth: 2,
+                          backgroundColor: Colors.black,
+                        ),
+                      )
+                    : Text(
+                        buttonText,
+                        style: TextStyle(
+                          color: showBorder ?? false
+                              ? AppColors.kPrimaryColor
+                              : textColor,
+                          fontSize: fontSize.sp,
+                          fontFamily: fontFamily ?? AppFonts.interBold,
+                          fontWeight: fontWeight,
+                        ),
+                      ),
               ),
       ),
     );

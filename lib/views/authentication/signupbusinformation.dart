@@ -7,7 +7,8 @@ import 'package:vendingsavvy/custom_widgets/custom_text.dart';
 import 'package:vendingsavvy/custom_widgets/customtextfield.dart'
     show CustomTextField;
 import 'package:hugeicons/hugeicons.dart';
-import 'package:vendingsavvy/models/user_models.dart'; // Ensure this is imported
+import 'package:vendingsavvy/models/user_models.dart';
+import 'package:vendingsavvy/repositries/auth_repo.dart'; // Ensure this is imported
 
 class Signupbusinformation extends StatefulWidget {
   const Signupbusinformation({super.key});
@@ -18,26 +19,14 @@ class Signupbusinformation extends StatefulWidget {
 
 class _SignupbusinformationState extends State<Signupbusinformation> {
   final _formKey = GlobalKey<FormState>();
-  // final TextEditingController customerNumberController =
-  //     TextEditingController();
-  // final TextEditingController fullNameController = TextEditingController();
-  // final TextEditingController emailPhoneController = TextEditingController();
-  // final TextEditingController passwordController = TextEditingController();
-  // final TextEditingController confirmPasswordController =
-  //     TextEditingController();
   final authController = Get.put(AuthController(authRepo: Get.find()));
-
+  // final authController = Get.put(AuthController(authRepo:AuthRepository(apiClient: Get.find())));
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   String? _passwordError;
 
   @override
   void dispose() {
-    // customerNumberController.dispose();
-    // fullNameController.dispose();
-    // emailPhoneController.dispose();
-    // passwordController.dispose();
-    // confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -273,23 +262,21 @@ class _SignupbusinformationState extends State<Signupbusinformation> {
                 SizedBox(height: 16.h),
                 ElevatedButton(
                   onPressed: () {
-                         Get.toNamed(RouteConstants.bussinessinformation);
-                  
-                  //   if (_formKey.currentState!.validate()) {
-                  //     // authController.registerUser(
-                  //     //   user: UserModel(
-                  //     //     name: authController.nameController.text.trim(),
-                  //     //     email: authController.emailController.text.trim(),
-                  //     //     password: authController.passwordController.text
-                  //     //         .trim(),
-                  //     //     address: authController.addressController.text.trim(),
-                  //     //     customerNumber: authController
-                  //     //         .customerNumbeController
-                  //     //         .text
-                  //     //         .trim(),
-                  //     //   ),
-                  //     // );
-                  //  }
+                    if (_formKey.currentState!.validate()) {
+                      authController.registerUser(
+                        user: UserModel(
+                          name: authController.nameController.text.trim(),
+                          email: authController.emailController.text.trim(),
+                          password: authController.passwordController.text
+                              .trim(),
+                          address: authController.addressController.text.trim(),
+                          customerNumber: authController
+                              .customerNumbeController
+                              .text
+                              .trim(),
+                        ),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
@@ -298,7 +285,7 @@ class _SignupbusinformationState extends State<Signupbusinformation> {
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                   ),
-                  child: CustomText(
+                  child: authController.isLoading.value?CircularProgressIndicator.adaptive(backgroundColor: Colors.white,): CustomText(
                     text: "Next",
                     color: Colors.white,
                     fontsize: 16.0,

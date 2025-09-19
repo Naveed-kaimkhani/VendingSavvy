@@ -7,7 +7,7 @@ class AppSnackbar {
       "Success",
       message,
       colorText: Colors.black,
-      backgroundColor: Colors.greenAccent,
+      // backgroundColor: Colors.greenAccent,
       snackPosition: SnackPosition.TOP,
     );
   }
@@ -17,7 +17,7 @@ class AppSnackbar {
       "Error",
       message,
       colorText: Colors.white,
-      backgroundColor: Colors.redAccent,
+      // backgroundColor: Colors.redAccent,
       snackPosition: SnackPosition.TOP,
     );
   }
@@ -26,8 +26,8 @@ class AppSnackbar {
     Get.snackbar(
       title,
       message,
-      colorText: Colors.white,
-      backgroundColor: Colors.blueAccent,
+      // colorText: Colors.white,
+      // backgroundColor: Colors.blueAccent,
       snackPosition: SnackPosition.BOTTOM,
     );
   }

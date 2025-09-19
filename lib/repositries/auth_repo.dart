@@ -32,10 +32,10 @@ class AuthRepository extends GetxController {
           final data = responseData['data'];
           final token = data['access_token'];
           final userData = data['user'];
-          // final registeredUser = UserModel.fromJson(userData);
+          final registeredUser = UserModel.fromJson(userData);
 
-          // await userController.saveUserSessionFromResponse(
-          //     registeredUser, token);
+          await userController.saveUserSessionFromResponse(
+              registeredUser, token);
 
           onSuccess();
         } else {
@@ -74,7 +74,7 @@ class AuthRepository extends GetxController {
         if (responseData['success'] == true) {
           final data = responseData['data'];
           final token = data['access_token'];
-          log("token value$token");
+          log("token $token");
           final userData = data['user'];
 
           final user = UserModel.fromJson(userData);
@@ -153,116 +153,97 @@ class AuthRepository extends GetxController {
     }
   }
 
-  // Future<void> submitBusinessInformation({
-  //   required String businessName,
-  //   required String businessAddress,
-  //   required String contactNumber,
-  //   required String businessType,
-  //   required String country,
-  //   required String state,
-  //   required String county,
-  //   required double stateTax,
-  //   required double countyTax,
-  //   required VoidCallback onSuccess,
-  //   required Function(String message) onError,
-  // }) async {
-  //   try {
-  //     final response = await apiClient
-  //         .post(
-  //           url: ApiEndpoints.addBusiInfo,
-  //           body: jsonEncode({
-  //             "business_name": businessName,
-  //             "business_address": businessAddress,
-  //             "contact_number": contactNumber,
-  //             "business_type": businessType,
-  //             "country": country,
-  //             "state": state,
-  //             "county": county,
-  //             "state_tax": stateTax,
-  //             "county_tax": countyTax,
-  //           }),
-  //         )
-  //         .timeout(const Duration(seconds: 15));
-
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       final data = jsonDecode(response.body);
-  //       if (data['success'] == true) {
-  //         onSuccess();
-  //       } else {
-  //         onError(data['message'] ?? "Failed to save business information");
-  //       }
-  //     } else {
-  //       final error = jsonDecode(response.body);
-  //       onError(error['message'] ?? "Failed to save business information");
-  //     }
-  //   } catch (e) {
-  //     log(e.toString());
-  //     onError("An error occurred while saving business information: $e");
-  //   }
-  
-  // }
-
   Future<void> submitBusinessInformation({
-  required String businessName,
-  required String businessAddress,
-  required String contactNumber,
-  required String businessType,
-  String? country,
-  String? state,
-  String? county,
-  double? stateTax,
-  double? countyTax,
-  double? commission,
-  double? salesTax,
-  double? rent,
-  required VoidCallback onSuccess,
-  required Function(String message) onError,
-}) async {
-  try {
-    // Base body (always required)
-    final Map<String, dynamic> body = {
-      "business_name": businessName,
-      "business_address": businessAddress,
-      "contact_number": contactNumber,
-      "business_type": businessType,
-    };
+    required String businessName,
+    required String businessAddress,
+    required String contactNumber,
+    required String businessType,
+    String? country,
+    String? state,
+    String? county,
+    double? stateTax,
+    double? countyTax,
+    double? commission,
+    double? salesTax,
+    double? rent,
+    required VoidCallback onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      // Base body (always required)
+      final Map<String, dynamic> body = {
+        "business_name": businessName,
+        "business_address": businessAddress,
+        "contact_number": contactNumber,
+        "business_type": businessType,
+      };
 
-    // Add optional fields only if present
-    if (country != null && country.isNotEmpty) body["country"] = country;
-    if (state != null && state.isNotEmpty) body["state"] = state;
-    if (county != null && county.isNotEmpty) body["county"] = county;
+      // Add optional fields only if present
+      if (country != null && country.isNotEmpty) body["country"] = country;
+      if (state != null && state.isNotEmpty) body["state"] = state;
+      if (county != null && county.isNotEmpty) body["county"] = county;
 
-    // Add tax info only if RETAILER
-    if (businessType == "RETAILER") {
-      if (stateTax != null) body["state_tax"] = stateTax;
-      if (countyTax != null) body["county_tax"] = countyTax;
-      if (commission != null) body["commission"] = commission;
-      if (salesTax != null) body["sales_tax"] = salesTax;
-      if (rent != null) body["rent"] = rent;
-    }
-
-    final response = await apiClient
-        .post(
-          url: ApiEndpoints.addBusiInfo,
-          body: jsonEncode(body),
-        )
-        .timeout(const Duration(seconds: 15));
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final data = jsonDecode(response.body);
-      if (data['success'] == true) {
-        onSuccess();
-      } else {
-        onError(data['message'] ?? "Failed to save business information");
+      // Add tax info only if RETAILER
+      if (businessType == "RETAILER") {
+        if (stateTax != null) body["state_tax"] = stateTax;
+        if (countyTax != null) body["county_tax"] = countyTax;
+        if (commission != null) body["commission"] = commission;
+        if (salesTax != null) body["sales_tax"] = salesTax;
+        if (rent != null) body["rent"] = rent;
       }
-    } else {
-      final error = jsonDecode(response.body);
-      onError(error['message'] ?? "Failed to save business information");
-    }
-  } catch (e) {
-    log(e.toString());
-    onError("An error occurred while saving business information: $e");
-  }
-}
 
+      final response = await apiClient
+          .post(url: ApiEndpoints.addBusiInfo, body: jsonEncode(body))
+          ;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true) {
+          onSuccess();
+        } else {
+          onError(data['message'] ?? "Failed to save business information");
+        }
+      } else {
+        final error = jsonDecode(response.body);
+        onError(error['message'] ?? "Failed to save business information");
+      }
+    } catch (e) {
+      log(e.toString());
+      onError("An error occurred while saving business information: $e");
+    }
+  }
+
+
+  // New method for submitting vending machine information
+  Future<void> submitVendingMachineInformation({
+    required List<Map<String, dynamic>> machineData,
+    required VoidCallback onSuccess,
+    required Function(String message) onError,
+  }) async {
+    try {
+      final response = await apiClient
+          .post(
+            url: ApiEndpoints.createMachineBulk, // You'll need to add this endpoint
+            body: jsonEncode({
+              "data": machineData,
+            }),
+          )
+          .timeout(const Duration(seconds: 15));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true) {
+          onSuccess();
+        } else {
+          onError(data['message'] ?? "Failed to save vending machine information");
+        }
+      } else {
+        final error = jsonDecode(response.body);
+        onError(error['message'] ?? "Failed to save vending machine information");
+      }
+    } catch (e) {
+      log(e.toString());
+      onError("An error occurred while saving vending machine information: $e");
+    }
+  }
 }

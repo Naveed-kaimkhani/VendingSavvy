@@ -20,11 +20,6 @@ class _BussinessinformationScreenState
     extends State<BussinessinformationScreen> {
   final _formKey = GlobalKey<FormState>();
   final authController = Get.find<AuthController>();
-  // bool _isPasswordVisible = false;
-  // bool _isConfirmPasswordVisible = false;
-  // String? _passwordError;
-
-  // Dropdown value
 
   @override
   void dispose() {
@@ -177,28 +172,76 @@ class _BussinessinformationScreenState
                   ),
                 ),
                 SizedBox(height: 12.h),
+
                 // New Field: Business Email
                 CustomText(
-                  text: "Business Email",
+                  text: "Country",
                   fontsize: 12.0,
                   fontWeight: FontWeight.bold,
                 ),
                 SizedBox(height: 4.h),
                 CustomTextField(
-                  hintText: "example@email.com",
-                  textEditingController: authController.emailController,
-                  filled: true,
+                  hintText: "Select country",
                   fontSize: 12.sp,
+                  textEditingController: authController.countryController,
+                  keyboardType: TextInputType.phone,
+                  filled: true,
                   fillColor: Colors.grey[200],
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: Icon(Icons.phone),
                   borderRadius: BorderRadius.circular(8.0),
-                  keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Please enter business email";
+                      return "Please enter country";
                     }
-                    if (!value.contains('@') || !value.contains('.')) {
-                      return "Please enter a valid email";
+                    return null;
+                  },
+                ),
+                SizedBox(height: 12.h),
+
+                // New Field: Business Email
+                CustomText(
+                  text: "State",
+                  fontsize: 12.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                SizedBox(height: 4.h),
+                CustomTextField(
+                  hintText: "Select state",
+                  fontSize: 12.sp,
+                  textEditingController: authController.stateController,
+                  keyboardType: TextInputType.phone,
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  prefixIcon: Icon(Icons.phone),
+                  borderRadius: BorderRadius.circular(8.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter State";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 12.h),
+
+                // New Field: Business Email
+                CustomText(
+                  text: "County",
+                  fontsize: 12.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                SizedBox(height: 4.h),
+                CustomTextField(
+                  hintText: "Select county",
+                  fontSize: 12.sp,
+                  textEditingController: authController.countyController,
+                  keyboardType: TextInputType.phone,
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  prefixIcon: Icon(Icons.phone),
+                  borderRadius: BorderRadius.circular(8.0),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter county";
                     }
                     return null;
                   },
@@ -207,44 +250,53 @@ class _BussinessinformationScreenState
                 buildTaxFields(authController),
 
                 SizedBox(height: 16.h),
-              
-             Obx(()=>   ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      authController.submitBusinessInformation(
-                        businessName:
-                            authController.businessNameController.text,
-                        businessAddress:
-                            authController.businessAddressController.text,
-                        contactNumber:
-                            authController.contactNumberController.text,
-                        businessType: authController.selectedBusinessType.value,
-                        country: authController.countryController.text,
-                        state: authController.stateController.text,
-                        county: authController.countyController.text,
-                        stateTax: double.parse(
-                          authController.stateController.text,
-                        ),
-                        countyTax: double.parse(
-                          authController.countyTaxController.text,
-                        ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    minimumSize: Size(double.infinity, 50.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
+
+                Obx(
+                  () => ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        authController.submitBusinessInformation(
+                          businessName:
+                              authController.businessNameController.text,
+                          businessAddress:
+                              authController.businessAddressController.text,
+                          contactNumber:
+                              authController.contactNumberController.text,
+                          businessType:
+                              authController.selectedBusinessType.value,
+                          country: authController.countryController.text,
+                          state: authController.stateController.text,
+                          county: authController.countyController.text,
+                          stateTax:authController.stateTaxController.text.isEmpty?0: double.parse(
+                            authController.stateTaxController.text,
+                          ),
+                          countyTax:    authController.countyTaxController.text.isEmpty?0:double.parse(
+                            authController.countyTaxController.text,
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: Size(double.infinity, 50.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
                     ),
+                    child: authController.isLoading.value
+                        ? CircularProgressIndicator.adaptive(
+                          backgroundColor: Colors.white,
+                        )
+                        : CustomText(
+                            text: "Next",
+                            color: Colors.white,
+                            fontsize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                   ),
-                  child: authController.isLoading.value?CircularProgressIndicator.adaptive() :CustomText(
-                    text: "Next",
-                    color: Colors.white,
-                    fontsize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),)
+                ),
+
+                SizedBox(height: 16.h),
               ],
             ),
           ),
