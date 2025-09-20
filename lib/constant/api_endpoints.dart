@@ -16,6 +16,10 @@ class ApiEndpoints {
   static const dashboard = '$baseApiURL/truck-information/dashboard';
 
   static const createMachineBulk = '$baseApiURL/machines/create-bulk';
-
-
+static const String verifyEmail = '$baseApiURL/auth/verify-email';
+  static const createProduct = '$baseApiURL/products/create';
+  static const getproducts = '$baseApiURL/products/all';
+  static const createcategory = '$baseApiURL/category';
+  static const getcategories = '$baseApiURL/category';
+  static const getmachines = '$baseApiURL/machines';
 }

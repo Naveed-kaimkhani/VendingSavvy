@@ -36,14 +36,37 @@ class AuthController extends GetxController {
   final countyTaxController = TextEditingController();
 
   var otp = "".obs;
-  
 
-  RxString selectedVendingMachines="1".obs;
-  RxString selectedCottonCandyMachines="1".obs;
-  RxString selectedOtherMachines="1".obs;
+  final otpController = TextEditingController();
 
+  RxString selectedVendingMachines = "1".obs;
+  RxString selectedCottonCandyMachines = "1".obs;
+  RxString selectedOtherMachines = "1".obs;
 
-final UserController userController = Get.find<UserController>();
+  @override
+  void onClose() {
+    // Clean up controllers
+    nameController.dispose();
+    addressController.dispose();
+    customerNumbeController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    businessNameController.dispose();
+    fullNameController.dispose();
+    businessAddressController.dispose();
+    contactNumberController.dispose();
+    businessTypeController.dispose();
+    countryController.dispose();
+    stateController.dispose();
+    countyController.dispose();
+    stateTaxController.dispose();
+    countyTaxController.dispose();
+    otpController.dispose();
+    super.onClose();
+  }
+
+  final UserController userController = Get.find<UserController>();
 
   // set user role
   void setRole(String role) {
@@ -53,13 +76,37 @@ final UserController userController = Get.find<UserController>();
   // register User
   void registerUser({required UserModel user}) {
     isLoading.value = true;
-    
+
     authRepo.registerUser(
       user: user,
       onSuccess: () {
         isLoading.value = false;
-        AppSnackbar.success("Registered successfully");
+        // AppSnackbar.success("Registered successfully");
         Get.toNamed(RouteConstants.bussinessinformation);
+      },
+      onError: (message) {
+        isLoading.value = false;
+        AppSnackbar.error(message);
+      },
+    );
+  }
+
+  // ✅ verify email OTP
+  void verifyEmail({required String otp}) {
+    isLoading.value = true;
+
+    authRepo.verifyEmail(
+      otp: otp,
+      onSuccess: () {
+        isLoading.value = false;
+        AppSnackbar.success("Email verified successfully");
+
+        final arguments = Get.arguments;
+        if (arguments != null && arguments['isFromForgotPassword'] == true) {
+        } else {
+          // From registration - go to dashboard
+          Get.toNamed(RouteConstants.dashboard);
+        }
       },
       onError: (message) {
         isLoading.value = false;
@@ -157,8 +204,9 @@ final UserController userController = Get.find<UserController>();
       onSuccess: () {
         isLoading.value = false;
         AppSnackbar.success("Business information saved successfully");
-      businessType=="RETAILER"? Get.toNamed(RouteConstants.vendinginformationscreen):Get.toNamed(RouteConstants.verifyscreen);
-   
+        businessType == "RETAILER"
+            ? Get.toNamed(RouteConstants.dashboard)
+            : Get.toNamed(RouteConstants.vendinginformationscreen);
       },
       onError: (message) {
         isLoading.value = false;

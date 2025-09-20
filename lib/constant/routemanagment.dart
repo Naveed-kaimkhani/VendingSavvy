@@ -17,6 +17,8 @@ import 'package:vendingsavvy/views/authentication/bussiness/expensemanagement/ca
 import 'package:vendingsavvy/views/authentication/bussiness/expensemanagement/expensehistory.dart';
 import 'package:vendingsavvy/views/authentication/bussiness/expensemanagement/expensemanagment.dart';
 import 'package:vendingsavvy/views/authentication/bussiness/expensemanagement/inventorycost.dart';
+import 'package:vendingsavvy/views/authentication/bussiness/inventory/add_inventory_screen.dart';
+import 'package:vendingsavvy/views/authentication/bussiness/inventory/inventory_management.dart';
 import 'package:vendingsavvy/views/authentication/bussiness/personalinformation.dart';
 import 'package:vendingsavvy/views/authentication/bussiness/profilepage.dart';
 import 'package:vendingsavvy/views/authentication/bussiness/reports/balancesheet.dart';
@@ -237,9 +239,19 @@ class AppRouters {
     GetPage(
       name: RouteConstants.bussinesslogin,
       page: () => const Businesslogin(),
+     
       curve: Curves.easeIn,
     ),
-
+     GetPage(
+      name: RouteConstants.inventorymanagement,
+      page: () => const InventoryScreen(),
+      curve: Curves.easeIn,
+    ),
+  GetPage(
+      name: RouteConstants.addinventory,
+      page: () => const AddInventoryScreen(),
+      curve: Curves.easeIn,
+    ),
     GetPage(
       name: RouteConstants.bussinessinformation,
       page: () => const BussinessinformationScreen(),

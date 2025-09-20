@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:vendingsavvy/constant/route_constants.dart' show RouteConstants;
 import 'package:vendingsavvy/controllers/auth_controllers.dart';
 import 'package:vendingsavvy/controllers/user_controller.dart';
+import 'package:vendingsavvy/repositries/auth_repo.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

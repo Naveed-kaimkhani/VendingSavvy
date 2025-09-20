@@ -25,14 +25,12 @@ class Businesslogin extends StatefulWidget {
 }
 
 class _BusinessloginState extends State<Businesslogin> {
-  
   GlobalKey<FormState> authForm = GlobalKey<FormState>();
   bool isPasswordObsure = true;
   bool isLoginActive = true; // State to track active tab
 
   @override
   void dispose() {
-    
     super.dispose();
   }
 
@@ -166,6 +164,7 @@ class _BusinessloginState extends State<Businesslogin> {
                   ),
                   SizedBox(height: 40.h),
                   CustomButton(
+                    // isLoading: authController.isLoading,
                     borderRadius: 30,
                     buttonColor: AppColors.kPrimaryColor,
                     onTap: authController.isLoading.value

@@ -52,4 +52,25 @@ this.emailVerified,
       
     };
   }
+
+
+
+  UserModel copyWith({
+  int? id,
+  String? name,
+  String? email,
+  String? password,
+  bool? email_verified,
+  // ... other fields
+}) {
+  return UserModel(
+    id: id ,
+    name: name ?? this.name,
+    email: email ?? this.email,
+    password: password ?? this.password,
+    emailVerified: email_verified ?? this.emailVerified,
+    customerNumber: customerNumber
+    // ... other fields
+  );
+}
 }

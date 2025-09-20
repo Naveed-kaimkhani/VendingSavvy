@@ -19,7 +19,9 @@ class Signupbusinformation extends StatefulWidget {
 
 class _SignupbusinformationState extends State<Signupbusinformation> {
   final _formKey = GlobalKey<FormState>();
-  final authController = Get.put(AuthController(authRepo: Get.find()));
+  final authController = Get.put(
+    AuthController(authRepo: Get.put(AuthRepository(apiClient: Get.find()))),
+  );
   // final authController = Get.put(AuthController(authRepo:AuthRepository(apiClient: Get.find())));
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
@@ -137,7 +139,7 @@ class _SignupbusinformationState extends State<Signupbusinformation> {
                 ),
                 SizedBox(height: 12.h),
                 CustomText(
-                  text: "Email/Phone",
+                  text: "Email",
                   fontsize: 12.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -153,8 +155,17 @@ class _SignupbusinformationState extends State<Signupbusinformation> {
                   borderRadius: BorderRadius.circular(8.0),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Please enter email or phone";
+                      return "Please enter email";
                     }
+
+                    // Basic email format validation
+                    final emailRegex = RegExp(
+                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    );
+                    if (!emailRegex.hasMatch(value)) {
+                      return "Please enter a valid email address";
+                    }
+
                     return null;
                   },
                 ),
@@ -260,38 +271,45 @@ class _SignupbusinformationState extends State<Signupbusinformation> {
                   },
                 ),
                 SizedBox(height: 16.h),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      authController.registerUser(
-                        user: UserModel(
-                          name: authController.nameController.text.trim(),
-                          email: authController.emailController.text.trim(),
-                          password: authController.passwordController.text
-                              .trim(),
-                          address: authController.addressController.text.trim(),
-                          customerNumber: authController
-                              .customerNumbeController
-                              .text
-                              .trim(),
-                        ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    minimumSize: Size(double.infinity, 50.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
+                Obx(() {
+                  return ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        authController.registerUser(
+                          user: UserModel(
+                            name: authController.nameController.text.trim(),
+                            email: authController.emailController.text.trim(),
+                            password: authController.passwordController.text
+                                .trim(),
+                            address: authController.addressController.text
+                                .trim(),
+                            customerNumber: authController
+                                .customerNumbeController
+                                .text
+                                .trim(),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: Size(double.infinity, 50.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
                     ),
-                  ),
-                  child: authController.isLoading.value?CircularProgressIndicator.adaptive(backgroundColor: Colors.white,): CustomText(
-                    text: "Next",
-                    color: Colors.white,
-                    fontsize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                    child: authController.isLoading.value
+                        ? CircularProgressIndicator.adaptive(
+                            backgroundColor: Colors.white,
+                          )
+                        : CustomText(
+                            text: "Next",
+                            color: Colors.white,
+                            fontsize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                  );
+                }),
                 SizedBox(height: 16.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -16,12 +16,16 @@ class RouteConstants {
   static String taxcalulator = '/taxcalulator';
   static String profilepage = '/profilepage';
   static String dashboard = '/dashboard';
+
+  static String inventorymanagement = '/inventorymanagement';
+  static String addinventory = '/addinventory';
   static String successscreen = '/successscreen';
   static String bankconnectionpage = '/bankconnectionpage';
   static String phoneverification = '/phoneverification';
   static String vendingsavingaddress = '/vendingsavingaddress';
   static String bussinesnextflow = '/bussinesnextflow';
   static String bussinesslogin = '/loginscreen';
+
   static String withdrawamount = '/withdrawamount';
   static String addnewcard = '/addnewcard';
   static String aboutus = '/aboutus';

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:vendingsavvy/constant/appcolors.dart';
 import 'package:vendingsavvy/constant/route_constants.dart';
+import 'package:vendingsavvy/controllers/user_controller.dart';
 
 import 'package:vendingsavvy/custom_widgets/custom_text.dart';
 
@@ -14,6 +15,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final UserController authController = Get.find<UserController>();
   @override
   void dispose() {
     super.dispose();
@@ -87,19 +89,22 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     SizedBox(height: 4.h),
-                    Center(
-                      child: CustomText(
-                        text: "Raisa Adriana",
-                        fontsize: 18.0,
-                        fontWeight: FontWeight.bold,
+                    Obx(
+                      () => Center(
+                        child: CustomText(
+                          text: authController.currentUser!.name,
+                          fontsize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    Center(
-                      child: CustomText(
-                        text: "raisaandriana@mail.com",
-                        fontsize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey,
+                    Obx(
+                      () => Center(
+                        child: CustomText(
+                          text: authController.currentUser!.email,
+                          fontsize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     SizedBox(height: 12.h),
@@ -157,6 +162,66 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   CustomText(
                                     text: "Manage account details",
+                                    fontsize: 12.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(Icons.chevron_right, color: Colors.grey),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Manage Account Details Container
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(RouteConstants.inventorymanagement);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 12.h),
+                        padding: EdgeInsets.all(12.w),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(0xffeaecf0),
+                            width: 2,
+                          ),
+                          color: Colors.white, // Already white, kept as is
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              blurRadius: 5,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue.withOpacity(0.1),
+                              ),
+                              padding: EdgeInsets.all(8.w),
+                              child: const Icon(
+                                Icons.production_quantity_limits,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomText(
+                                    text: "Inventory Management",
+                                    fontsize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  CustomText(
+                                    text: "Explore products",
                                     fontsize: 12.0,
                                     fontWeight: FontWeight.w400,
                                     color: Colors.grey,
@@ -647,7 +712,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed(RouteConstants.loginscreen);
+                        // Get.toNamed(RouteConstants.loginscreen);
+                        authController.logout();
                       },
 
                       child: Container(
